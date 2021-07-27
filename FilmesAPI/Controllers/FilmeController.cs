@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FilmesAPI.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,12 @@ namespace FilmesAPI.Controllers
     public class FilmeController : ControllerBase
     {
         private static IList<Filme> filmes = new List<Filme>();
-        public void AdicionaFilme(Filme filme)
+        
+        [HttpPost]
+        public void AdicionaFilme([FromBody] Filme filme)
         {
             filmes.Add(filme);
+            Console.WriteLine($"Passando no 'AdicionarFilme', o nome do filme é {filme.Titulo}");
         }
     }
 }
