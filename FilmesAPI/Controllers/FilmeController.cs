@@ -15,23 +15,28 @@ namespace FilmesAPI.Controllers
         private static int id = 1;
         
         [HttpPost]
-        public void AdicionarFilme([FromBody] Filme filme)
+        public IActionResult AdicionarFilme([FromBody] Filme filme)
         {
             filme.Id = id++;
             filmes.Add(filme);
-            Console.WriteLine($"Passando no 'AdicionarFilme', o nome do filme é {filme.Titulo}");
+            return CreatedAtAction(nameof(RecuperarFilmePorId), new { id = filme.Id }, filme);
         }
 
         [HttpGet]
-        public IEnumerable<Filme> RecuperarFilmes()
+        public IActionResult RecuperarFilmes()
         {
-            return filmes;
+            return Ok(filmes);
         }
 
         [HttpGet("{id}")]
-        public Filme RecuperarFilmePorId(int id)
+        public IActionResult RecuperarFilmePorId(int id)
         {
-            return filmes.FirstOrDefault(filme => filme.Id == id);
+            Filme filme = filmes.FirstOrDefault(filme => filme.Id == id);
+            if(filme != null)
+            {
+                return Ok(filme);
+            }
+            return NotFound(filme);
         }
     }
 }
